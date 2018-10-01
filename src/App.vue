@@ -7,11 +7,13 @@
 
 <script>
 import HelloLovely from "./components/HelloLovely.vue";
+import Deposit from "./components/Deposit.vue";
 
 export default {
   name: "app",
   components: {
-    HelloLovely
+    HelloLovely,
+    Deposit
   }
 };
 </script>

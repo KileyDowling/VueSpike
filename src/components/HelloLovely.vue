@@ -1,25 +1,54 @@
 <template>
   <div class="hello">
-   <div class="intro"> <h2>{{ msg }} <span class="name">{{name}}</span></h2></div>
+   <div class="intro"> 
+       <h2><input v-model="name"  type="text" placeholder="update your name" /></h2>
+       <h4>{{ msg }} <span class="name">{{name}}</span></h4></div>
 
       <p>Set/Update your goal:
   <input v-model="goal"  type="number" placeholder="enter your goal here" /> </p>
   <h3><b>Your goal is <span style="color: green">${{goal}}</span></b></h3>
 
   <p> Previous Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | Current Balance: ${{getLatest}}</span></p>
+  <p>Previous Deposits</p>
+   <Deposit v-for="deposit in list" 
+                    :deposit="deposit" 
+                    :key="deposit.id" />
 
+<p>{{calculateDeposits()}}</p>
  <p>Make a deposit: <input v-model="addedValue" type="number" placeholder="add your latest deposit" /> </p>
 
   <div class="reverseProgress">
-    <!--<p class="progress">Congrats! You are now at {{percentProgress}} of your goal</p> -->
+    <p class="progress">Congrats! You are now at {{percentProgress}} of your goal</p> 
 
   <p>Amount Remaining: <span id="goal">{{remainingToGoal}} </span>| Percent Remainng: <span id="percent">{{remainingToGoalPercent}}</span></p></div>
     </div>
 </template>
 
 <script>
+import Deposit from "./Deposit.vue";
+
 export default {
   name: "HelloLovely",
+  components: {
+    Deposit
+  },
+  data() {
+    return {
+      list: [
+        {
+          id: 1,
+          amount: 5,
+          date: "January 1, 2018"
+        },
+        {
+          id: 2,
+          amount: 10,
+          date: "February 1, 2018"
+        }
+      ],
+      deposit: ""
+    };
+  },
 
   props: {
     msg: {
@@ -32,11 +61,11 @@ export default {
     },
     previousProgress: {
       type: Number,
-      default: 25
+      default: 6000
     },
     goal: {
       type: Number,
-      default: 100
+      default: 10000
     },
     progress: Number,
     addedValue: {
@@ -53,6 +82,23 @@ export default {
   methods: {
     calculatePercentToGoal: function() {
       this.percentToGoal = Math.round((this.latest / this.goal) * 100);
+    },
+
+    sumDeposits: function(total, num) {
+      return total + num;
+    },
+
+    calculateDeposits: function() {
+      let tot = [];
+
+      Object.entries(this.list).forEach(function(key, deposit) {
+        if (key[deposit].amount != undefined) {
+          tot.push(key[deposit].amount);
+        }
+      });
+
+      var totValue = tot.reduce(this.sumDeposits);
+      return totValue;
     }
   },
 
