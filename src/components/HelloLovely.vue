@@ -9,18 +9,21 @@
   <h3><b>Your goal is <span style="color: green">${{goal}}</span></b></h3>
 
   <p> Previous Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | Current Balance: ${{getLatest}}</span></p>
-  <p>Previous Deposits</p>
-   <Deposit v-for="deposit in list" 
-                    :deposit="deposit" 
-                    :key="deposit.id" />
-
-<p>{{calculateDeposits()}}</p>
+  
  <p>Make a deposit: <input v-model="addedValue" type="number" placeholder="add your latest deposit" /> </p>
 
   <div class="reverseProgress">
     <p class="progress">Congrats! You are now at {{percentProgress}} of your goal</p> 
 
   <p>Amount Remaining: <span id="goal">{{remainingToGoal}} </span>| Percent Remainng: <span id="percent">{{remainingToGoalPercent}}</span></p></div>
+
+  <hr>
+  <p>Previous Deposits</p>
+   <Deposit v-for="deposit in list" 
+                    :deposit="deposit" 
+                    :key="deposit.id" />
+
+<p>Total Deposits: {{calculateDeposits()}}</p>
     </div>
 </template>
 
@@ -37,12 +40,12 @@ export default {
       list: [
         {
           id: 1,
-          amount: 5,
+          amount: 5500,
           date: "January 1, 2018"
         },
         {
           id: 2,
-          amount: 10,
+          amount: 500,
           date: "February 1, 2018"
         }
       ],
@@ -89,16 +92,12 @@ export default {
     },
 
     calculateDeposits: function() {
-      let tot = [];
-
-      Object.entries(this.list).forEach(function(key, deposit) {
-        if (key[deposit].amount != undefined) {
-          tot.push(key[deposit].amount);
-        }
+      let sum = 0;
+      this.list.forEach(function(item) {
+        sum += parseFloat(item.amount);
       });
 
-      var totValue = tot.reduce(this.sumDeposits);
-      return totValue;
+      return sum;
     }
   },
 
