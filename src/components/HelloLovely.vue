@@ -1,5 +1,6 @@
 <template>
-<div>
+<div class="flexbox-container">
+  <div class="main">
    <div class="intro"> 
      <input v-model="name"  type="text" placeholder="update your name" />
        <h2>{{ msg }} <span class="name">{{name}}</span></h2>
@@ -9,7 +10,7 @@
   <input v-model="goal"  type="number" placeholder="enter your goal here" /> </p>
   
 
-  <p> Previous Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | Current Balance: ${{getLatest}}</span></p>
+  <p> Previous Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | New Balance: ${{getLatest}}</span></p>
   
  <p>Make a deposit: <input v-model="addedValue" type="number" placeholder="add your latest deposit" /> <button class="button" v-on:click="submitDeposit()">Add</button></p>
 
@@ -17,16 +18,17 @@
     <p class="progress">Congrats! You are now at {{percentProgress}} of your goal</p> 
 
   <p>Amount Remaining: <span id="goal">{{remainingToGoal}} </span>| Percent Remainng: <span id="percent">{{remainingToGoalPercent}}</span></p></div> 
+</div> 
 
-
-  <hr>
-<p>Previous Deposits</p>
+    <div class="sidebar">
+<h3>Previous Deposits</h3>
    <Deposit v-for="deposit in list" 
                     :deposit="deposit" 
                     :key="deposit.id" />
 
 <p class="bold">Total Deposits: <span class="green">{{calculateDeposits()}}</span></p>
 </div>
+</div> 
 </template>
 
 <script>
@@ -195,5 +197,23 @@ a {
 }
 .bold {
   font-weight: bold;
+}
+.flexbox-container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  order: 1;
+  flex: 1;
+  flex-basis: auto;
+  padding: 0.5rem;
+  min-height: 666px;
+}
+
+.main {
+  order: 1;
+  flex: 5;
+  padding: 0.5rem;
 }
 </style>
