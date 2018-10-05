@@ -1,12 +1,18 @@
 <template>
-  <div><p>{{deposit.date}}: ${{deposit.amount}}</p>
+  <div><p>{{deposit.date}}: ${{deposit.amount}}  <span v-on:click="removeDeposit(deposit)">x</span>
+</p>
     </div>
 </template>
 
 <script>
 export default {
   name: "Deposit",
-  props: ["deposit"]
+  props: ["deposit"],
+  methods: {
+    removeDeposit: function(deposit) {
+      this.$emit("delete", deposit);
+    }
+  }
 };
 </script>
 

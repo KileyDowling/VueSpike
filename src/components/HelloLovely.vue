@@ -10,7 +10,7 @@
   <input v-model="goal"  type="number" placeholder="enter your goal here" /> </p>
   
 
-  <p> Previous Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | New Balance: ${{getLatest}}</span></p>
+  <p> Current Balance: ${{previousProgress}}  <span v-if="previousProgress!=getLatest || getLatest==0 "> | Projected Balance: ${{getLatest}}</span></p>
   
  <p>Make a deposit: <input v-model="addedValue" type="number" placeholder="add your latest deposit" /> <button class="button" v-on:click="submitDeposit()">Add</button></p>
 
@@ -24,7 +24,8 @@
 <h3>Previous Deposits</h3>
    <Deposit v-for="deposit in list" 
                     :deposit="deposit" 
-                    :key="deposit.id" />
+                    :key="deposit.id"
+                    @delete="removeDeposit" />
 
 <p class="bold">Total Deposits: <span class="green">{{calculateDeposits()}}</span></p>
 </div>
@@ -103,7 +104,13 @@ export default {
         sum += parseFloat(item.amount);
       });
 
-      return this.formatter(sum);
+      return sum;
+      //return this.formatter(sum);
+    },
+    removeDeposit: function(item) {
+      this.list = this.list.filter(deposit => deposit !== item);
+      this.previousProgress = this.calculateDeposits();
+      this.getLatest();
     }
   },
 
@@ -146,7 +153,7 @@ export default {
       });
       this.calculateDeposits();
       this.previousProgress = this.latest;
-      this.addedValue = 0;
+      this.getLatest();
     }
   }
 };
