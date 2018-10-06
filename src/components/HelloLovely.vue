@@ -153,6 +153,7 @@ export default {
       });
       this.calculateDeposits();
       this.previousProgress = this.latest;
+      this.addedValue = 0;
       this.getLatest();
     }
   }
