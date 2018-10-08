@@ -1,5 +1,5 @@
 <template>
-  <div><p>{{deposit.date}}: ${{deposit.amount}}  <span v-on:click="removeDeposit(deposit)">x</span>
+  <div><p>{{deposit.date}}: ${{deposit.amount}}  <span class="delete" v-on:click="removeDeposit(deposit)">x</span>
 </p>
     </div>
 </template>
@@ -42,6 +42,10 @@ a {
 }
 .reverseProgress {
   color: lightslategray;
+  font-weight: bold;
+}
+.delete {
+  color: rgb(236, 35, 35);
   font-weight: bold;
 }
 </style>
